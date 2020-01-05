@@ -6,6 +6,8 @@ main() {
     clone_dotfiles_repo
     install_homebrew
     install_packages_with_brewfile
+    install_oh_my_zsh
+    setup_symlinks
 }
 
 DOTFILES_REPO=~/dotfiles
@@ -113,6 +115,26 @@ function install_packages_with_brewfile() {
     fi
 }
 
+function install_oh_my_zsh {
+    info "install oh my zsh"
+
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+    if [ $? -eq 0 ]; then
+        success "oh my zsh successfully installed"
+    else
+        error "oh my zsh installation failed"
+    fi
+}
+
+function setup_symlinks() {
+    info "Setting up symlinks"
+
+    symlink "zsh" ${DOTFILES_REPO}/shell/.zshrc ~/.zshrc
+
+    success "Symlinks successfully setup"
+}
+
 ######################################################################
 ### UTILS
 ######################################################################
@@ -124,6 +146,24 @@ function pull_latest() {
         return
     else
         error "Please pull latest changes in ${1} repository manually"
+    fi
+}
+
+function symlink() {
+    application=$1
+    point_to=$2
+    destination=$3
+    destination_dir=$(dirname "$destination")
+
+    if test ! -e "$destination_dir"; then
+        substep "Creating ${destination_dir}"
+        mkdir -p "$destination_dir"
+    fi
+    if rm -rf "$destination" && ln -s "$point_to" "$destination"; then
+        substep "Symlinking for \"${application}\" done"
+    else
+        error "Symlinking for \"${application}\" failed"
+        exit 1
     fi
 }
 
