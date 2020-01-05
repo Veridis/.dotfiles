@@ -1,4 +1,5 @@
 cask "appcleaner"
+cask "alfred"
 cask "betterzip"
 cask "flux"
 cask "itsycal"
