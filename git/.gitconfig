@@ -1,0 +1,25 @@
+[user]
+	name = Makdessi Alex
+	email = alex.makdessi@me.com
+[alias]
+	co = checkout
+	br = branch
+	cm = commit -m
+	cma = commit --amend --no-edit
+	st = status
+	m = merge
+	ps = push
+	pso = push origin
+	pl = pull --ff-only
+	plo = pull origin --ff-only
+	rb = rebase
+	fixup = commit --fixup
+	fetcha = fetch --all
+	fetchap = fetch --all --prune
+	lpr = log --graph --pretty=format:'%C(bold red)%h%Creset - %s %C(bold blue)<%an>%Creset %C(dim green)[%cr]%Creset %C(dim yellow)%d%Creset'
+[core]
+	excludesfile = /Users/alex/.gitignore_global
+[push]
+	default = current
+[rebase]
+	autosquash = true

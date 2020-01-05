@@ -10,8 +10,7 @@ main() {
     setup_symlinks
 }
 
-DOTFILES_REPO=~/dotfiles
-#DOTFILES_REPO=~/.dotfiles
+DOTFILES_REPO=~/.dotfiles
 GIT_DOTFILE_REPO=git@github.com:Veridis/.dotfiles.git
 
 function ask_for_sudo() {
@@ -131,6 +130,9 @@ function setup_symlinks() {
     info "Setting up symlinks"
 
     symlink "zsh" ${DOTFILES_REPO}/shell/.zshrc ~/.zshrc
+
+    symlink "git:config" ${DOTFILES_REPO}/git/.gitconfig ~/.gitconfig
+    symlink "git:ignore" ${DOTFILES_REPO}/git/.gitignore_global ~/.gitignore_global
 
     success "Symlinks successfully setup"
 }
