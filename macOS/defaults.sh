@@ -27,23 +27,25 @@ function ask_for_sudo() {
 }
 
 function kill_affected_apps() {
-    for app in \
-        "Activity Monitor" \
-        "Calendar" \
-        "cfprefsd" \
-        "Contacts" \
-        "Dock" \
-        "Finder" \
-        "Firefox" \
-        "Google Chrome" \
-        "Mail" \
-        "Messages" \
-        "Photos" \
-        "Safari" \
-        "Spectacle" \
-        "SystemUIServer" \
-        "Terminal"; do
-            killall "${app}" &> /dev/null
+    apps_to_kill=(
+        "Activity Monitor"
+        "Calendar"
+        "cfprefsd"
+        "Contacts"
+        "Dock"
+        "Finder"
+        "firefox"
+        "Google Chrome"
+        "Mail"
+        "Messages"
+        "Photos"
+        "Safari"
+        "Spectacle"
+        "SystemUIServer"
+        "Terminal"
+    )
+    for app in "${apps_to_kill[@]}"; do
+        killall "${app}" &> /dev/null
     done
 }
 
