@@ -1,7 +1,6 @@
 brew "bash-completion"
 brew "bash-git-prompt"
 brew "curl-openssl"
-brew "git", link: false
 brew "glib"
 brew "highlight"
 brew "sqlite"

@@ -4,10 +4,8 @@ main() {
     ask_for_sudo
     install_xcode_command_line_tools # to get "git", needed for clone_dotfiles_repo
     clone_dotfiles_repo
-    install_homebrew
-    install_packages_with_brewfile
-    install_oh_my_zsh
-    setup_symlinks
+    #install_oh_my_zsh
+    #setup_symlinks
 }
 
 DOTFILES_REPO=~/.dotfiles
@@ -55,60 +53,6 @@ function clone_dotfiles_repo() {
             success "Dotfiles repository cloned into ${DOTFILES_REPO}"
         else
             error "Dotfiles repository cloning failed"
-            exit 1
-        fi
-    fi
-}
-
-function install_homebrew() {
-    info "Installing Homebrew"
-    if hash brew 2>/dev/null; then
-        success "Homebrew already exists"
-    else
-        url=https://raw.githubusercontent.com/Homebrew/install/master/install
-        if yes | /usr/bin/ruby -e "$(curl -fsSL ${url})"; then
-            success "Homebrew installation succeeded"
-        else
-            error "Homebrew installation failed"
-            exit 1
-        fi
-    fi
-}
-
-function install_packages_with_brewfile() {
-    info "Installing Brewfiles packages"
-
-    TAP=${DOTFILES_REPO}/brew/Brewfile.tap
-    BREW=${DOTFILES_REPO}/brew/Brewfile.brew
-    CASK=${DOTFILES_REPO}/brew/Brewfile.cask
-
-    # install parallel: https://www.gnu.org/software/parallel/
-    if hash parallel 2>/dev/null; then
-        substep "parallel already exists"
-    else
-        if brew install parallel &> /dev/null; then
-            printf 'will cite' | parallel --citation &> /dev/null
-            substep "parallel installation succeeded"
-        else
-            error "parallel installation failed"
-            exit 1
-        fi
-    fi
-
-    if (echo $TAP; echo $BREW; echo $CASK) | parallel --verbose --linebuffer -j 4 brew bundle check --file={} &> /dev/null; then
-        success "Brewfile packages are already installed"
-    else
-        if brew bundle --file="$TAP"; then
-            substep "Brewfile.tap installation succeeded"
-
-            if (echo $BREW; echo $CASK) | parallel --verbose --linebuffer -j 3 brew bundle --file={}; then
-                success "Brewfile packages installation succeeded"
-            else
-                error "Brewfile packages installation failed"
-                exit 1
-            fi
-        else
-            error "Brewfile.tap installation failed"
             exit 1
         fi
     fi
